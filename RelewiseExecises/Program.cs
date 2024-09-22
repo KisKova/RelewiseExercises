@@ -1,3 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
+namespace RelewiseExecises;
 
-Console.WriteLine("Hello, World!");
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        IJob job = new ProductJsonMapper();
+        string result = await job.Execute();
+        Console.WriteLine(result);
+    }
+}
