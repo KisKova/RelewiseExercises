@@ -1,4 +1,4 @@
-namespace RelewiseExecises;
+namespace RelewiseExecises.Exercise1;
 
 public class ProductJson
 { 
