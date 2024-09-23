@@ -66,7 +66,7 @@ public class ProductRawDataMapper : IJob
         catch (Exception ex)
         {
             await warn($"An error occurred: {ex.Message}");
-            return $"An error occurred: {ex.Message}";
+            throw;
         }
     }
 
