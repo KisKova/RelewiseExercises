@@ -26,33 +26,34 @@ public class ProductJsonMapper : IJob
             }
 
             string jsonData = await httpClient.GetStringAsync(jsonUrl);
+            var productJsonArray = JsonConvert.DeserializeObject<ProductJson[]>(jsonData);
 
-            var productJsonArray = JsonConvert.DeserializeObject<List<ProductJson>>(jsonData);
+            Product[] mappedProducts = new Product[productJsonArray.Length];
 
-            List<Product> mappedProducts = new List<Product>();
-            Language english = new Language("en"); 
+            Language english = new Language("en");
             Currency usd = new Currency("USD");
 
-            foreach (var productJson in productJsonArray)
+            for (int i = 0; i < productJsonArray.Length; i++)
             {
                 if (token.IsCancellationRequested)
                 {
                     await warn("Job was cancelled during processing.");
                     token.ThrowIfCancellationRequested();
                 }
-                
+
+                var productJson = productJsonArray[i];
                 var product = new Product(productJson.productId);
 
                 product.DisplayName = new Multilingual(new Multilingual.Value(english, productJson.productName));
                 product.ListPrice = new MultiCurrency(new Money(usd, ParsePrice(productJson.listPrice)));
                 product.SalesPrice = new MultiCurrency(new Money(usd, ParsePrice(productJson.salesPrice)));
-                
-                mappedProducts.Add(product);
+
+                mappedProducts[i] = product;
             }
 
-            await info($"Successfully mapped {mappedProducts.Count} products.");
+            await info($"Successfully mapped {mappedProducts.Length} products.");
 
-            return $"Mapped {mappedProducts.Count} products successfully.";
+            return $"Mapped {mappedProducts.Length} products successfully.";
         }
         catch (Exception ex)
         {

@@ -17,14 +17,17 @@ public class Program
         Func<string, Task> warnLogger = message => Task.Run(() => Console.WriteLine($"WARN: {message}"));
         CancellationTokenSource cts = new CancellationTokenSource();
         
+        Console.WriteLine("Exercise 1");
         IJob jobOne = new ProductJsonMapper();
         string result = await jobOne.Execute(arguments, infoLogger, warnLogger, cts.Token);
         Console.WriteLine(result);
         
+        Console.WriteLine("Exercise 2");
         IJob jobTwo = new ProductGoogleFeedMapper();
         string result2 = await jobTwo.Execute(arguments, infoLogger, warnLogger, cts.Token);
         Console.WriteLine(result2);
         
+        Console.WriteLine("Exercise 3");
         IJob jobThree = new ProductRawDataMapper();
         string result3 = await jobThree.Execute(arguments, infoLogger, warnLogger, cts.Token);
         Console.WriteLine(result3);
