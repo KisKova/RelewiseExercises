@@ -64,6 +64,11 @@ public class ProductJsonMapper : IJob
 
     private decimal ParsePrice(string? price)
     {
-        return decimal.Parse(price.Replace("$", ""), NumberStyles.Currency, CultureInfo.InvariantCulture);
+        if (string.IsNullOrEmpty(price))
+            return 0;
+        
+        var numericString = new string(price.Where(c => char.IsDigit(c) || c == '.').ToArray());
+        
+        return decimal.Parse(numericString, CultureInfo.InvariantCulture);
     }
 }
